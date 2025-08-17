@@ -25,7 +25,7 @@ pipeline {
                     sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
 
                 script {
-                    echo "Pushing the Docker image to DockerHub on the branch..."
+                    echo "Pushing the Docker image to DockerHub based on the branch..."
                         if (env.BRANCH_NAME == 'dev') {
                             sh "docker tag final-dev:latest ${env.dockerHubUser}/dev:latest"
                             sh "docker push ${env.dockerHubUser}/dev:latest"
@@ -34,6 +34,17 @@ pipeline {
                             sh "docker push ${env.dockerHubUser}/prod:latest"
                         }
                     }
+                }
+            }
+        }
+        stage('Deploy to Server'){
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
+            steps{
+                script {
+                    echo "Deploying the Docker image using Docker Compose..."
+                    sh 'chmod +x deploy.sh && ./deploy.sh'
                 }
             }
         }
