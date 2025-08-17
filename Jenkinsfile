@@ -19,12 +19,17 @@ pipeline {
         }
         stage('Push to DockerHub'){
             steps{
+                    echo "Login to DockerHub..."
+                withCredentials([usernamePassword(credentialsId:"dockerHublogin",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
+                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+
                 script {
                     echo "Pushing the Docker image to DockerHub on the branch..."
-                    if (env.BRANCH_NAME == 'dev') {
-                        sh 'docker push nandoo03/dev:latest'
-                    } else if (env.BRANCH_NAME == 'master') {
-                        sh 'docker push nandoo03/prod:latest'
+                        if (env.BRANCH_NAME == 'dev') {
+                            sh 'docker push ${env.dockerHubUser}/dev:latest'
+                        } else if (env.BRANCH_NAME == 'master') {
+                            sh 'docker push ${env.dockerHubUser}/prod:latest'
+                        }
                     }
                 }
             }
