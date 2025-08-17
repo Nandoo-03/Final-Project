@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout'){
             steps{
 
-                 git branch: '${env.BRANCH_NAME}', url: 'https://github.com/Nandoo-03/Final-Project.git'
+                 git branch: "${env.BRANCH_NAME}", url: 'https://github.com/Nandoo-03/Final-Project.git'
             }
         }
         stage('Build'){
