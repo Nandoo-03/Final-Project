@@ -27,8 +27,10 @@ pipeline {
                 script {
                     echo "Pushing the Docker image to DockerHub on the branch..."
                         if (env.BRANCH_NAME == 'dev') {
+                            sh "docker tag final-dev:latest ${env.dockerHubUser}/dev:latest"
                             sh "docker push ${env.dockerHubUser}/dev:latest"
                         } else if (env.BRANCH_NAME == 'master') {
+                            sh "docker tag final-prod:latest ${env.dockerHubUser}/prod:latest"
                             sh "docker push ${env.dockerHubUser}/prod:latest"
                         }
                     }
