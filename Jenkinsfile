@@ -14,7 +14,6 @@ pipeline {
                     echo "Building the Docker image based on the branch..."
                     sh 'chmod +x build.sh && ./build.sh'
                 }
-
             }
         }
         stage('Push to DockerHub'){
